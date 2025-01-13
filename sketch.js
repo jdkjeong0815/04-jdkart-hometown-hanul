@@ -1,6 +1,10 @@
-// By Steve's Makerspace
+// 오리지널: By Steve's Makerspace
 // video: https://youtu.be/R0OFyWEglGA
-// jdk: add tree image (24-12-23)
+// 수정 by jdk:
+//  - (24-Dec-23) add tree image, 
+//  - (25-Jan-10) 나무 크기 조정, 화면을 윈도우 크기에 맞게 자동으로 조정
+//  - (25-Jan-14) 작가명칭 삭제 => 프로젝트 명칭으로 대체
+
 
 let logMessages = []; // 로그 메시지를 저장하는 배열
 let maxLogs = 10; // 화면에 표시할 최대 로그 개수
@@ -129,11 +133,11 @@ function newArt() {
   // }
   console.log("Tree Scale: ", treeScale);
   if(treeScale < 0.55) {
-  filter(INVERT);   // 색상 뒤집기
+    filter(INVERT);   // 색상 뒤집기
     console.log("Invert");
   }
   if(treeScale > 0.6) {
-  filter(GRAY);
+    filter(GRAY);
     console.log("Gray");
   }
   
@@ -150,11 +154,12 @@ function newArt() {
   const timestamp = getTimestamp(); 
   text(timestamp, width - 10, height - 10 - logMessages.length * lineHeight);
   // jdk 싸인
-  text("By DK Jeong", width - 10, height - 10 - (logMessages.length + 1) * lineHeight);
+  //text("By DK Jeong", width - 10, height - 10 - (logMessages.length + 1) * lineHeight);
+  // 프로젝트명
+  text("Hometown Hanul", width - 10, height - 10 - (logMessages.length + 1) * lineHeight);
   // 텍스트 버퍼 리셋
   logMessages = [];
 }
-
 
 function paperTexture(textureType) {
   //based on color present
@@ -216,7 +221,7 @@ function keyPressed() {
 // 파일 저장 함수
 function saveCanvasWithTimestamp() {
   const timestamp = getTimestamp(); // 현재 타임스탬프 생성
-  saveCanvas(`jdk_sketch_${timestamp}`, 'png'); // 파일명과 형식 지정
+  saveCanvas(`jdk_hometown_hanul_${timestamp}`, 'png'); // 파일명과 형식 지정
 }
 
 // console.log를 오버라이드하여 메시지를 캔버스에 기록
