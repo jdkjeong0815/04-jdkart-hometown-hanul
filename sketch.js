@@ -16,16 +16,29 @@ let myFont;
 
 function preload() {
   // 폰트 설정
-  myFont = loadFont('assets/GreatVibes-Regular.ttf'); // 원하는 고딕체 파일 경로
+  myFont = loadFont('assets/font/GreatVibes-Regular.ttf'); // 원하는 고딕체 파일 경로
   
-  // Load tree images
+  // Load tree images with callback to skip non-existent files
   for (let i = 0; i < numTrees; i++) {
-    //treeImages[i] = loadImage(`assets/tree${i}.png`);
-    treeImages[i] = loadImage(`assets/dead-tree-silhouette-${i}.png`);
+    let imgPath = `assets/tree/dead-tree-silhouette-${i}.png`;
+    loadImage(imgPath, 
+      img => treeImages.push(img), // Success callback
+      err => console.log(`Image not found: ${imgPath}`) // Error callback
+    );
   }
 }
 
+function touchStarted() {
+  // 첫 번째 터치: 풀스크린 활성화
+  let fs = fullscreen();
+  fullscreen(!fs);
+  
+  setTimeout(newArt, 2000);  // 애니메이션 효과를 위해 120초로 변경
+  // return false; // 기본 터치 동작 방지
+}
+
 function setup() {
+  noScroll(); // 스크롤 금지. 스크롤바 생기는 것 방지
   // 고딕체 폰트적용
   textFont(myFont); 
   
@@ -34,18 +47,14 @@ function setup() {
   
   // 주기적으로 갱신
   newArt();
-  setInterval(newArt, 60000); // generate new art every 60 seconds
+  setInterval(newArt, 6000); // generate new art every 60 seconds
   
 }
 
 function newArt() {
   // 텍스트 버퍼 리셋
   logMessages = [];
-  //console.log(logMessages);
-  
-  //canvSize = min(windowWidth, windowHeight);
-  //createCanvas(canvSize, canvSize);
-  // Full 스크린 모드
+
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 120, 100, 255);
   background(0);
@@ -66,7 +75,7 @@ function newArt() {
   // 옵션 중 랜덤 선택
   rez1 = random(rez1Options);
   rez2 = random(rez2Options);
-  console.log("Angle: ", rez1, "     Color: ", rez2);
+  //console.log("Angle: ", rez1, "     Color: ", rez2);
   //rez1 = 0.0006; // angle 0.006 / 0.06 / 0.6 /0.0006
   //rez2 = 0.0005; // color 0.005 / 0.05 / 0.5 /0.0005
   gap = 15;
@@ -110,7 +119,7 @@ function newArt() {
   // let index = treeImages.indexOf(selectedTree);
   // console.log(index);
  
-  let treeScale = random(0.5, 0.9);  // 0.666 화면 대비 나무는 2/3 높이 기준
+  let treeScale = random(0.66, 0.76);  // 0.666 화면 대비 나무는 2/3 높이 기준
   let ratioTree = selectedTree.width / selectedTree.height;
   let imgHeight = height * treeScale;
   let imgWidth = imgHeight * ratioTree;
@@ -123,22 +132,14 @@ function newArt() {
   image(selectedTree, posX, posY, imgWidth, imgHeight);
 
   // 5) 필터 효과 주기
-  // if (treeScale < 2.1) {
-  //   filter(GRAY);       // 흑백 효과
-  //   console.log("Gray");
-  // }
-  // if(treeScale > 2.4) {
-  //   filter(INVERT);   // 색상 뒤집기
-  //   console.log("Invert");
-  // }
-  console.log("Tree Scale: ", treeScale);
-  if(treeScale < 0.55) {
+  //console.log("Tree Scale: ", treeScale);
+  if(treeScale < 0.2) {
     filter(INVERT);   // 색상 뒤집기
-    console.log("Invert");
+    //console.log("Invert");
   }
-  if(treeScale > 0.6) {
+  if(treeScale > 0.8) {
     filter(GRAY);
-    console.log("Gray");
+    //console.log("Gray");
   }
   
   // 로그 메시지 표시
@@ -248,4 +249,13 @@ function getTimestamp() {
   const min = String(now.getMinutes()).padStart(2, '0');
   const ss = String(now.getSeconds()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  redraw();
+}
+
+function noScroll() {
+  document.body.style.overflow = 'hidden';
 }
