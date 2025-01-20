@@ -1,17 +1,26 @@
-// 오리지널: By Steve's Makerspace
-// video: https://youtu.be/R0OFyWEglGA
-// 수정 by jdk:
-//  - (24-Dec-23) add tree image, 
-//  - (25-Jan-10) 나무 크기 조정, 화면을 윈도우 크기에 맞게 자동으로 조정
-//  - (25-Jan-14) 작가명칭 삭제 => 프로젝트 명칭으로 대체
+// =============================================================================
+// 프로그램 : 04-jdkart-hometown-hanul
+// Created : 2024-Dec-23
+// 작가 : jdk                    Inspiration : By Steve's Makerspace (오리지널) https://youtu.be/R0OFyWEglGA
+// Github : https://github.com/jdkjeong0815/04-jdkart-hometown-hanul
+// Web : https://jdkjeong0815.github.io/04-jdkart-hometown-hanul/
+// 작품 설명 : 
+// 라이브러리 기능 : jdklib.js
+// 주기적인 리로드 : 매  ??초
+// Last Update : 
+// 2025-Jan-14 요약
+//  - 1) 작가명칭 삭제 => 프로젝트 명칭으로 대체
+//  - 2) 
+// 2024-Jan-10 요약
+//  - 1) 나무 크기 조정, 화면을 윈도우 크기에 맞게 자동으로 조정
+//  - 2)  
+// =============================================================================
 
-
+let saveFileName = "04-jdkart-hometown-hanul";
 let logMessages = []; // 로그 메시지를 저장하는 배열
 let maxLogs = 10; // 화면에 표시할 최대 로그 개수
-
 let treeImages = []; // Array to store tree images
 let numTrees = 39; // Number of tree images to preload
-
 let myFont;
 
 function preload() {
@@ -33,7 +42,7 @@ function touchStarted() {
   let fs = fullscreen();
   fullscreen(!fs);
   
-  setTimeout(newArt, 2000);  // 애니메이션 효과를 위해 120초로 변경
+  setTimeout(newArt, 2000);  // 애니메이션 효과를 위해 2초로 변경
   // return false; // 기본 터치 동작 방지
 }
 
@@ -48,7 +57,6 @@ function setup() {
   // 주기적으로 갱신
   newArt();
   setInterval(newArt, 6000); // generate new art every 60 seconds
-  
 }
 
 function newArt() {
@@ -208,24 +216,6 @@ function paperTexture(textureType) {
   colorMode(HSB, 360, 120, 100, 255);
 }
 
-// 키보드 또는 터치 이벤트에서 저장
-function keyPressed() {
-  if (key === 's' || key === 'S') {
-    saveCanvasWithTimestamp();
-  }
-}
-
-// function touchStarted() {
-//   saveCanvasWithTimestamp();
-// }
-
-// 파일 저장 함수
-function saveCanvasWithTimestamp() {
-  const timestamp = getTimestamp(); // 현재 타임스탬프 생성
-  saveCanvas(`jdk_hometown_hanul_${timestamp}`, 'png'); // 파일명과 형식 지정
-}
-
-// console.log를 오버라이드하여 메시지를 캔버스에 기록
 function overrideConsoleLog() {
   const originalLog = console.log; // 기존 console.log 저장
 
@@ -249,13 +239,4 @@ function getTimestamp() {
   const min = String(now.getMinutes()).padStart(2, '0');
   const ss = String(now.getSeconds()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  redraw();
-}
-
-function noScroll() {
-  document.body.style.overflow = 'hidden';
 }
